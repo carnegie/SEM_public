@@ -4,4 +4,5 @@ This repository contains branches corresponding to published works using the SEM
 
 # Publication / Associated Branch
 
- * Dowling et al. "Role of long-duration energy storage in variable renewable electricity systems" 2020. see branch `Dowling_long-duration-storage`
+ * Dowling et al., Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems, Joule (2020), https://doi.org/10.1016/j.joule.2020.07.007
+   * see branch `Dowling_et_al_2020`: https://github.com/carnegie/SEM_public/tree/Dowling_et_al_2020
