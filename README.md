@@ -1,7 +1,5 @@
-# Published SEM Repositories for Documentation
+# Dowling_et_al_2020
 
-This repository contains branches corresponding to published works using the SEM model. It is designed to retain these branches for future documentation and reproducibility.
+Documenting "Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems", Joule XXX to be published August 6.
+Repository will be populated prior.
 
-# Publication / Associated Branch
-
- * Dowling et al. "Role of long-duration energy storage in variable renewable electricity systems" 2020. see branch `Dowling_long-duration-storage`
