@@ -1,0 +1,551 @@
+"This file is documentation for the input data format for the case definition file, used as input for the Simple Energy Model v 1.0",,,,,,
+,,,,,,
+This is an example of the file format. This part of the file is for comments only.,,,,,,
+,,,,,,
+All global variables (not case specific) are specified after 'BEGIN GLOBAL DATA',,,,,,
+All default technology costs and characteristics are specified after 'BEGIN ALL CASES DATA',,,,,,
+"After 'BEGIN CASE DATA' enter the ratios of the case to the default value (i.e., if something is twice as expensive or twice as efficient, enter a 2)",,,,,,
+,,,,,,
+Completely blank rows will be ignored.,,,,,,
+Items with unknown keywords will be ignored.,,,,,,
+Keyword names are case insensitive.,,,,,,
+,,,,,,
+"To reduce errors, if one keyword exists relevant to a technology, all keywords for that technology must be defined (i.e., if you have FIXED_COST_wind, you must have a VAR_COST_wind).",,,,,,
+,,,,,,
+"All energy-related (i.e., capacity) costs are in terms of $/hr per kW capacity, except for variable generators (wind and solar) it is cost per hour of deployment at the level of the associated capacity file.",,,,,,
+,,,,,,
+"Note that costs of technologies with associated capacity files (e.g., wind solar) are assumed to be of the form where fixed costs the cost of hour of acheiveing the potential generation in the associated capacity file (i.e., there is no further normalization within the code).",,,,,,
+,,,,,,
+"All power-related (i.e., generation) costs  are in terms of $/kWh dispatched",,,,,,
+Variable cost of energy storage (VAR_COST_storage) is in units of $/hr per kWh stored.,,,,,,
+,,,,,,
+"If the fixed cost for a technology is entered as a negative value, then that technology is assumed not to participate in the optimization.",,,,,,
+,,,,,,
+"It is assumed that the time series files will be a csv file with at least 5 columns:  year, month, day, hour, data. Subsequent columns will be ignored.",,,,,,
+,,,,,,
+"Hours are in the range of 1 to 24, where hour 1 is between midnight and 1 AM. Hour 24 is between 11 PM and midnight.",,,,,,
+,,,,,,
+"Required parameter data include: verbose, root_path, quick_output.",,,,,,
+,,,,,,
+Required case data includes case_name.,,,,,,
+,,,,,,
+"Allowable case keywords may appear either in the ""global data"" section or the ""case data"" section.",,,,,,
+,,,,,,
+Keywords that appear in the global section apply to all cases.,,,,,,
+"So, for example, if all cases are to be run for the same time period, the start and stop time information could be put in the global section.",,,,,,
+,,,,,,
+"Required GLOBAL keywords are: VERBOSE, SWITCH_POSTPROCESS",,,,,,
+,,,,,,
+Required CASE keywords are: CASE_NAME,,,,,,
+,,,,,,
+BEGIN_GLOBAL_DATA,"""BEGIN_GLOBAL_DATA"" is a keyword that must be in the first column of the file. This section defines various flags and paths that will apply to the entire series of simulations.",,,,,
+,,,,,,
+GLOBAL_NAME,ng_flex_nuc,"GLOBAL_NAME will be the name of the folder containing key output, name of pickle file, etc",,,,
+DATA_PATH,Input_Data/Shaner-et-al_E&ES2018,"DATA_PATH is where the input data will reside. It is prepended to the wind, solar, and demand file specifications listed in the cases. (no trailing slash)",,,,
+OUTPUT_PATH,Output_Data,OUTPUT_PATH is where the output folder will be created for this set of cases (no trailing slash),,,,
+,,,,,,
+VERBOSE,TRUE,"Print output to standard output while process (TRUE is good for interactive, FALSE is good for running lots of things in batch)",,,,
+POSTPROCESS,FALSE,POSTPROCESS is True if you want standard output files. This variable must be stpecified,,,,
+QUICK_LOOK,FALSE,QUICK_LOOK is true if you want to use the newer postprocessing system.,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+BEGIN_ALL_CASES_DATA,"""BEGIN_ALL_CASES_DATA"" is a keyword that must be in the first column of the file. This section defines various flags (if any) that will be true for all of the simulations. Param keywords must be in the first column. Param value must be in the second column. Other columns are treated as comments.",,,,,
+,,,,,,
+NUMERICS_COST_SCALING,1.00E+12,"Scaling value for costs to increase accuracy of optimizer results. Ideally, should have no implication for final results.",,,,
+NUMERICS_DEMAND_SCALING,1.00E+12,"Scaling value for demand to increase accuracy of optimizer results. Ideally, should have no implication for final results.",,,,
+,,,,,,
+DEMAND_FILE,demand_series_Shaner_normalized_to_1_mean.csv,,,,,
+NORMALIZE_DEMAND_TO_ONE,TRUE,Normalize demand to 1.,,,,
+,,,,,,
+START_YEAR,2015,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+START_MONTH,1,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+START_DAY,1,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+START_HOUR,1,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+END_YEAR,2015,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+END_MONTH,12,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+END_DAY,31,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+END_HOUR,24,"When these values are entered for cases below, they are not scaled but entered as they should be used.",,,,
+,,,,,,
+SOLAR_CAPACITY_FILE,solar_series_Shaner_normalized_to_0.2_mean.csv,,,,,
+FIXED_COST_SOLAR,1.95287E-02,($/h)/kW,0.01953 is default value,,,
+VAR_COST_SOLAR,1.00000E-08,"The idea is that this should be a small number, and smaller than wind, so solar is curtailed first",,,,
+,,,,,,
+WIND_CAPACITY_FILE,wind_series_Shaner_normalized_to_0.38_mean.csv,,,,,
+FIXED_COST_WIND,2.06486E-02,($/h)/kW,0.02065 is default value,,,
+VAR_COST_WIND,1.05000E-08,"The idea is that this should be a small number, but bigger than solar, so solar is curtailed first",,,,
+,,,,,,
+FIXED_COST_NATGAS,1.18419E-02,($/h)/kW,0.0273,These values are suitable for NGCC/CCS,,
+VAR_COST_NATGAS,2.25900E-02,$/kWh,0.0297,These values are suitable for NGCC/CCS,,
+,,,,,,
+FIXED_COST_NUCLEAR,6.24339E-02,($/h)/kW,0.06243 is default value,,,
+VAR_COST_NUCLEAR,9.77000E-03,$/kWh,,,,
+,,,,,,
+FIXED_COST_STORAGE,-1,($/h)/kWh,If we assume $261/kWh capacity with a 8% cap recovery factor and 8760 hours per year (and 6 hour charge/discharge time),,,
+VAR_COST_TO_STORAGE,0,($/h)/kW,,,,
+VAR_COST_FROM_STORAGE,0,($/h)/kW,,,,
+STORAGE_CHARGING_EFFICIENCY,0.9,,,,,
+STORAGE_DECAY_RATE,0.00001,fraction per hour,,1% per month,,
+STORAGE_CHARGING_TIME,6,hours,from $1568/kW and $261/kWh from Davis et al 2018,,,
+,,,,,,
+FIXED_COST_PGP_STORAGE,-1,($/h)/kWh,2.73973E-06,2.7e-6 adds on about 2.4 cents per kWh if used one cycle per year,,
+FIXED_COST_TO_PGP_STORAGE,-1,($/h)/kW,($/h)/kW,,,
+FIXED_COST_FROM_PGP_STORAGE,-1,($/h)/kW,Electrolyser $4600 per kW capital cost. Assume 8% capital recovery factor and 8760 hours per year = ,,,
+VAR_COST_TO_PGP_STORAGE,0,($/h)/kW,,,,
+VAR_COST_FROM_PGP_STORAGE,0,($/h)/kW,,,,
+PGP_STORAGE_DECAY_RATE,1.13514E-06,fraction per hour,1.13514E-06,1% per year,,
+PGP_STORAGE_CHARGING_EFFICIENCY,0.3,,,,,
+,,,,,,
+VAR_COST_UNMET_DEMAND,-1,($/h)/kW,,,,
+,,,,,,
+,,"Note: values provided below will override values given above. Cost numbers are given as ratios to the ALL_CASE_DATA (i.e., 2 ==> twice as much as listed in ALL_CASE_DATA). Dates, efficiencies, etc, are given in absolute values.",,,,
+BEGIN_CASE_DATA,"""BEGIN_CASE_DATA"" is a keyword that must be in the first column of the file. The next row must contain keywords. Definitions here will multiply times values in  <BEGIN_ALL_CASES_DATA>. There must be at least one row here, because this is how the number of cases gets defined.",,,,,
+CASE_NAME,FIXED_COST_SOLAR,VAR_COST_SOLAR,FIXED_COST_WIND,VAR_COST_WIND,FIXED_COST_NUCLEAR,VAR_COST_NUCLEAR
+,,,,,,
+renew100nuc100,1,1,1,1,1,1
+renew100nuc095,1,1,1,1,0.950005,0.950005
+renew100nuc090,1,1,1,1,0.900005,0.900005
+renew100nuc085,1,1,1,1,0.850005,0.850005
+renew100nuc080,1,1,1,1,0.800005,0.800005
+renew100nuc075,1,1,1,1,0.750005,0.750005
+renew100nuc070,1,1,1,1,0.700005,0.700005
+renew100nuc065,1,1,1,1,0.650005,0.650005
+renew100nuc060,1,1,1,1,0.600005,0.600005
+renew100nuc055,1,1,1,1,0.550005,0.550005
+renew100nuc050,1,1,1,1,0.500005,0.500005
+renew100nuc045,1,1,1,1,0.450005,0.450005
+renew100nuc040,1,1,1,1,0.400005,0.400005
+renew100nuc035,1,1,1,1,0.350005,0.350005
+renew100nuc030,1,1,1,1,0.300005,0.300005
+renew100nuc025,1,1,1,1,0.250005,0.250005
+renew100nuc020,1,1,1,1,0.200005,0.200005
+renew100nuc015,1,1,1,1,0.150005,0.150005
+renew100nuc010,1,1,1,1,0.100005,0.100005
+renew100nuc005,1,1,1,1,0.050005,0.050005
+renew100nuc000,1,1,1,1,1.00E-08,1.00E-08
+renew095nuc100,0.95,0.95,0.95,0.95,1,1
+renew095nuc095,0.95,0.95,0.95,0.95,0.950005,0.950005
+renew095nuc090,0.95,0.95,0.95,0.95,0.900005,0.900005
+renew095nuc085,0.95,0.95,0.95,0.95,0.850005,0.850005
+renew095nuc080,0.95,0.95,0.95,0.95,0.800005,0.800005
+renew095nuc075,0.95,0.95,0.95,0.95,0.750005,0.750005
+renew095nuc070,0.95,0.95,0.95,0.95,0.700005,0.700005
+renew095nuc065,0.95,0.95,0.95,0.95,0.650005,0.650005
+renew095nuc060,0.95,0.95,0.95,0.95,0.600005,0.600005
+renew095nuc055,0.95,0.95,0.95,0.95,0.550005,0.550005
+renew095nuc050,0.95,0.95,0.95,0.95,0.500005,0.500005
+renew095nuc045,0.95,0.95,0.95,0.95,0.450005,0.450005
+renew095nuc040,0.95,0.95,0.95,0.95,0.400005,0.400005
+renew095nuc035,0.95,0.95,0.95,0.95,0.350005,0.350005
+renew095nuc030,0.95,0.95,0.95,0.95,0.300005,0.300005
+renew095nuc025,0.95,0.95,0.95,0.95,0.250005,0.250005
+renew095nuc020,0.95,0.95,0.95,0.95,0.200005,0.200005
+renew095nuc015,0.95,0.95,0.95,0.95,0.150005,0.150005
+renew095nuc010,0.95,0.95,0.95,0.95,0.100005,0.100005
+renew095nuc005,0.95,0.95,0.95,0.95,0.050005,0.050005
+renew095nuc000,0.95,0.95,0.95,0.95,0.00000001,0.00000001
+renew090nuc100,0.9,0.9,0.9,0.9,1,1
+renew090nuc095,0.9,0.9,0.9,0.9,0.950005,0.950005
+renew090nuc090,0.9,0.9,0.9,0.9,0.900005,0.900005
+renew090nuc085,0.9,0.9,0.9,0.9,0.850005,0.850005
+renew090nuc080,0.9,0.9,0.9,0.9,0.800005,0.800005
+renew090nuc075,0.9,0.9,0.9,0.9,0.750005,0.750005
+renew090nuc070,0.9,0.9,0.9,0.9,0.700005,0.700005
+renew090nuc065,0.9,0.9,0.9,0.9,0.650005,0.650005
+renew090nuc060,0.9,0.9,0.9,0.9,0.600005,0.600005
+renew090nuc055,0.9,0.9,0.9,0.9,0.550005,0.550005
+renew090nuc050,0.9,0.9,0.9,0.9,0.500005,0.500005
+renew090nuc045,0.9,0.9,0.9,0.9,0.450005,0.450005
+renew090nuc040,0.9,0.9,0.9,0.9,0.400005,0.400005
+renew090nuc035,0.9,0.9,0.9,0.9,0.350005,0.350005
+renew090nuc030,0.9,0.9,0.9,0.9,0.300005,0.300005
+renew090nuc025,0.9,0.9,0.9,0.9,0.250005,0.250005
+renew090nuc020,0.9,0.9,0.9,0.9,0.200005,0.200005
+renew090nuc015,0.9,0.9,0.9,0.9,0.150005,0.150005
+renew090nuc010,0.9,0.9,0.9,0.9,0.100005,0.100005
+renew090nuc005,0.9,0.9,0.9,0.9,0.050005,0.050005
+renew090nuc000,0.9,0.9,0.9,0.9,0.00000001,0.00000001
+renew085nuc100,0.85,0.85,0.85,0.85,1,1
+renew085nuc095,0.85,0.85,0.85,0.85,0.950005,0.950005
+renew085nuc090,0.85,0.85,0.85,0.85,0.900005,0.900005
+renew085nuc085,0.85,0.85,0.85,0.85,0.850005,0.850005
+renew085nuc080,0.85,0.85,0.85,0.85,0.800005,0.800005
+renew085nuc075,0.85,0.85,0.85,0.85,0.750005,0.750005
+renew085nuc070,0.85,0.85,0.85,0.85,0.700005,0.700005
+renew085nuc065,0.85,0.85,0.85,0.85,0.650005,0.650005
+renew085nuc060,0.85,0.85,0.85,0.85,0.600005,0.600005
+renew085nuc055,0.85,0.85,0.85,0.85,0.550005,0.550005
+renew085nuc050,0.85,0.85,0.85,0.85,0.500005,0.500005
+renew085nuc045,0.85,0.85,0.85,0.85,0.450005,0.450005
+renew085nuc040,0.85,0.85,0.85,0.85,0.400005,0.400005
+renew085nuc035,0.85,0.85,0.85,0.85,0.350005,0.350005
+renew085nuc030,0.85,0.85,0.85,0.85,0.300005,0.300005
+renew085nuc025,0.85,0.85,0.85,0.85,0.250005,0.250005
+renew085nuc020,0.85,0.85,0.85,0.85,0.200005,0.200005
+renew085nuc015,0.85,0.85,0.85,0.85,0.150005,0.150005
+renew085nuc010,0.85,0.85,0.85,0.85,0.100005,0.100005
+renew085nuc005,0.85,0.85,0.85,0.85,0.050005,0.050005
+renew085nuc000,0.85,0.85,0.85,0.85,0.00000001,0.00000001
+renew080nuc100,0.8,0.8,0.8,0.8,1,1
+renew080nuc095,0.8,0.8,0.8,0.8,0.950005,0.950005
+renew080nuc090,0.8,0.8,0.8,0.8,0.900005,0.900005
+renew080nuc085,0.8,0.8,0.8,0.8,0.850005,0.850005
+renew080nuc080,0.8,0.8,0.8,0.8,0.800005,0.800005
+renew080nuc075,0.8,0.8,0.8,0.8,0.750005,0.750005
+renew080nuc070,0.8,0.8,0.8,0.8,0.700005,0.700005
+renew080nuc065,0.8,0.8,0.8,0.8,0.650005,0.650005
+renew080nuc060,0.8,0.8,0.8,0.8,0.600005,0.600005
+renew080nuc055,0.8,0.8,0.8,0.8,0.550005,0.550005
+renew080nuc050,0.8,0.8,0.8,0.8,0.500005,0.500005
+renew080nuc045,0.8,0.8,0.8,0.8,0.450005,0.450005
+renew080nuc040,0.8,0.8,0.8,0.8,0.400005,0.400005
+renew080nuc035,0.8,0.8,0.8,0.8,0.350005,0.350005
+renew080nuc030,0.8,0.8,0.8,0.8,0.300005,0.300005
+renew080nuc025,0.8,0.8,0.8,0.8,0.250005,0.250005
+renew080nuc020,0.8,0.8,0.8,0.8,0.200005,0.200005
+renew080nuc015,0.8,0.8,0.8,0.8,0.150005,0.150005
+renew080nuc010,0.8,0.8,0.8,0.8,0.100005,0.100005
+renew080nuc005,0.8,0.8,0.8,0.8,0.050005,0.050005
+renew080nuc000,0.8,0.8,0.8,0.8,0.00000001,0.00000001
+renew075nuc100,0.75,0.75,0.75,0.75,1,1
+renew075nuc095,0.75,0.75,0.75,0.75,0.950005,0.950005
+renew075nuc090,0.75,0.75,0.75,0.75,0.900005,0.900005
+renew075nuc085,0.75,0.75,0.75,0.75,0.850005,0.850005
+renew075nuc080,0.75,0.75,0.75,0.75,0.800005,0.800005
+renew075nuc075,0.75,0.75,0.75,0.75,0.750005,0.750005
+renew075nuc070,0.75,0.75,0.75,0.75,0.700005,0.700005
+renew075nuc065,0.75,0.75,0.75,0.75,0.650005,0.650005
+renew075nuc060,0.75,0.75,0.75,0.75,0.600005,0.600005
+renew075nuc055,0.75,0.75,0.75,0.75,0.550005,0.550005
+renew075nuc050,0.75,0.75,0.75,0.75,0.500005,0.500005
+renew075nuc045,0.75,0.75,0.75,0.75,0.450005,0.450005
+renew075nuc040,0.75,0.75,0.75,0.75,0.400005,0.400005
+renew075nuc035,0.75,0.75,0.75,0.75,0.350005,0.350005
+renew075nuc030,0.75,0.75,0.75,0.75,0.300005,0.300005
+renew075nuc025,0.75,0.75,0.75,0.75,0.250005,0.250005
+renew075nuc020,0.75,0.75,0.75,0.75,0.200005,0.200005
+renew075nuc015,0.75,0.75,0.75,0.75,0.150005,0.150005
+renew075nuc010,0.75,0.75,0.75,0.75,0.100005,0.100005
+renew075nuc005,0.75,0.75,0.75,0.75,0.050005,0.050005
+renew075nuc000,0.75,0.75,0.75,0.75,0.00000001,0.00000001
+renew070nuc100,0.7,0.7,0.7,0.7,1,1
+renew070nuc095,0.7,0.7,0.7,0.7,0.950005,0.950005
+renew070nuc090,0.7,0.7,0.7,0.7,0.900005,0.900005
+renew070nuc085,0.7,0.7,0.7,0.7,0.850005,0.850005
+renew070nuc080,0.7,0.7,0.7,0.7,0.800005,0.800005
+renew070nuc075,0.7,0.7,0.7,0.7,0.750005,0.750005
+renew070nuc070,0.7,0.7,0.7,0.7,0.700005,0.700005
+renew070nuc065,0.7,0.7,0.7,0.7,0.650005,0.650005
+renew070nuc060,0.7,0.7,0.7,0.7,0.600005,0.600005
+renew070nuc055,0.7,0.7,0.7,0.7,0.550005,0.550005
+renew070nuc050,0.7,0.7,0.7,0.7,0.500005,0.500005
+renew070nuc045,0.7,0.7,0.7,0.7,0.450005,0.450005
+renew070nuc040,0.7,0.7,0.7,0.7,0.400005,0.400005
+renew070nuc035,0.7,0.7,0.7,0.7,0.350005,0.350005
+renew070nuc030,0.7,0.7,0.7,0.7,0.300005,0.300005
+renew070nuc025,0.7,0.7,0.7,0.7,0.250005,0.250005
+renew070nuc020,0.7,0.7,0.7,0.7,0.200005,0.200005
+renew070nuc015,0.7,0.7,0.7,0.7,0.150005,0.150005
+renew070nuc010,0.7,0.7,0.7,0.7,0.100005,0.100005
+renew070nuc005,0.7,0.7,0.7,0.7,0.050005,0.050005
+renew070nuc000,0.7,0.7,0.7,0.7,0.00000001,0.00000001
+renew065nuc100,0.65,0.65,0.65,0.65,1,1
+renew065nuc095,0.65,0.65,0.65,0.65,0.950005,0.950005
+renew065nuc090,0.65,0.65,0.65,0.65,0.900005,0.900005
+renew065nuc085,0.65,0.65,0.65,0.65,0.850005,0.850005
+renew065nuc080,0.65,0.65,0.65,0.65,0.800005,0.800005
+renew065nuc075,0.65,0.65,0.65,0.65,0.750005,0.750005
+renew065nuc070,0.65,0.65,0.65,0.65,0.700005,0.700005
+renew065nuc065,0.65,0.65,0.65,0.65,0.650005,0.650005
+renew065nuc060,0.65,0.65,0.65,0.65,0.600005,0.600005
+renew065nuc055,0.65,0.65,0.65,0.65,0.550005,0.550005
+renew065nuc050,0.65,0.65,0.65,0.65,0.500005,0.500005
+renew065nuc045,0.65,0.65,0.65,0.65,0.450005,0.450005
+renew065nuc040,0.65,0.65,0.65,0.65,0.400005,0.400005
+renew065nuc035,0.65,0.65,0.65,0.65,0.350005,0.350005
+renew065nuc030,0.65,0.65,0.65,0.65,0.300005,0.300005
+renew065nuc025,0.65,0.65,0.65,0.65,0.250005,0.250005
+renew065nuc020,0.65,0.65,0.65,0.65,0.200005,0.200005
+renew065nuc015,0.65,0.65,0.65,0.65,0.150005,0.150005
+renew065nuc010,0.65,0.65,0.65,0.65,0.100005,0.100005
+renew065nuc005,0.65,0.65,0.65,0.65,0.050005,0.050005
+renew065nuc000,0.65,0.65,0.65,0.65,0.00000001,0.00000001
+renew060nuc100,0.6,0.6,0.6,0.6,1,1
+renew060nuc095,0.6,0.6,0.6,0.6,0.950005,0.950005
+renew060nuc090,0.6,0.6,0.6,0.6,0.900005,0.900005
+renew060nuc085,0.6,0.6,0.6,0.6,0.850005,0.850005
+renew060nuc080,0.6,0.6,0.6,0.6,0.800005,0.800005
+renew060nuc075,0.6,0.6,0.6,0.6,0.750005,0.750005
+renew060nuc070,0.6,0.6,0.6,0.6,0.700005,0.700005
+renew060nuc065,0.6,0.6,0.6,0.6,0.650005,0.650005
+renew060nuc060,0.6,0.6,0.6,0.6,0.600005,0.600005
+renew060nuc055,0.6,0.6,0.6,0.6,0.550005,0.550005
+renew060nuc050,0.6,0.6,0.6,0.6,0.500005,0.500005
+renew060nuc045,0.6,0.6,0.6,0.6,0.450005,0.450005
+renew060nuc040,0.6,0.6,0.6,0.6,0.400005,0.400005
+renew060nuc035,0.6,0.6,0.6,0.6,0.350005,0.350005
+renew060nuc030,0.6,0.6,0.6,0.6,0.300005,0.300005
+renew060nuc025,0.6,0.6,0.6,0.6,0.250005,0.250005
+renew060nuc020,0.6,0.6,0.6,0.6,0.200005,0.200005
+renew060nuc015,0.6,0.6,0.6,0.6,0.150005,0.150005
+renew060nuc010,0.6,0.6,0.6,0.6,0.100005,0.100005
+renew060nuc005,0.6,0.6,0.6,0.6,0.050005,0.050005
+renew060nuc000,0.6,0.6,0.6,0.6,0.00000001,0.00000001
+renew055nuc100,0.55,0.55,0.55,0.55,1,1
+renew055nuc095,0.55,0.55,0.55,0.55,0.950005,0.950005
+renew055nuc090,0.55,0.55,0.55,0.55,0.900005,0.900005
+renew055nuc085,0.55,0.55,0.55,0.55,0.850005,0.850005
+renew055nuc080,0.55,0.55,0.55,0.55,0.800005,0.800005
+renew055nuc075,0.55,0.55,0.55,0.55,0.750005,0.750005
+renew055nuc070,0.55,0.55,0.55,0.55,0.700005,0.700005
+renew055nuc065,0.55,0.55,0.55,0.55,0.650005,0.650005
+renew055nuc060,0.55,0.55,0.55,0.55,0.600005,0.600005
+renew055nuc055,0.55,0.55,0.55,0.55,0.550005,0.550005
+renew055nuc050,0.55,0.55,0.55,0.55,0.500005,0.500005
+renew055nuc045,0.55,0.55,0.55,0.55,0.450005,0.450005
+renew055nuc040,0.55,0.55,0.55,0.55,0.400005,0.400005
+renew055nuc035,0.55,0.55,0.55,0.55,0.350005,0.350005
+renew055nuc030,0.55,0.55,0.55,0.55,0.300005,0.300005
+renew055nuc025,0.55,0.55,0.55,0.55,0.250005,0.250005
+renew055nuc020,0.55,0.55,0.55,0.55,0.200005,0.200005
+renew055nuc015,0.55,0.55,0.55,0.55,0.150005,0.150005
+renew055nuc010,0.55,0.55,0.55,0.55,0.100005,0.100005
+renew055nuc005,0.55,0.55,0.55,0.55,0.050005,0.050005
+renew055nuc000,0.55,0.55,0.55,0.55,0.00000001,0.00000001
+renew050nuc100,0.5,0.5,0.5,0.5,1,1
+renew050nuc095,0.5,0.5,0.5,0.5,0.950005,0.950005
+renew050nuc090,0.5,0.5,0.5,0.5,0.900005,0.900005
+renew050nuc085,0.5,0.5,0.5,0.5,0.850005,0.850005
+renew050nuc080,0.5,0.5,0.5,0.5,0.800005,0.800005
+renew050nuc075,0.5,0.5,0.5,0.5,0.750005,0.750005
+renew050nuc070,0.5,0.5,0.5,0.5,0.700005,0.700005
+renew050nuc065,0.5,0.5,0.5,0.5,0.650005,0.650005
+renew050nuc060,0.5,0.5,0.5,0.5,0.600005,0.600005
+renew050nuc055,0.5,0.5,0.5,0.5,0.550005,0.550005
+renew050nuc050,0.5,0.5,0.5,0.5,0.500005,0.500005
+renew050nuc045,0.5,0.5,0.5,0.5,0.450005,0.450005
+renew050nuc040,0.5,0.5,0.5,0.5,0.400005,0.400005
+renew050nuc035,0.5,0.5,0.5,0.5,0.350005,0.350005
+renew050nuc030,0.5,0.5,0.5,0.5,0.300005,0.300005
+renew050nuc025,0.5,0.5,0.5,0.5,0.250005,0.250005
+renew050nuc020,0.5,0.5,0.5,0.5,0.200005,0.200005
+renew050nuc015,0.5,0.5,0.5,0.5,0.150005,0.150005
+renew050nuc010,0.5,0.5,0.5,0.5,0.100005,0.100005
+renew050nuc005,0.5,0.5,0.5,0.5,0.050005,0.050005
+renew050nuc000,0.5,0.5,0.5,0.5,0.00000001,0.00000001
+renew045nuc100,0.45,0.45,0.45,0.45,1,1
+renew045nuc095,0.45,0.45,0.45,0.45,0.950005,0.950005
+renew045nuc090,0.45,0.45,0.45,0.45,0.900005,0.900005
+renew045nuc085,0.45,0.45,0.45,0.45,0.850005,0.850005
+renew045nuc080,0.45,0.45,0.45,0.45,0.800005,0.800005
+renew045nuc075,0.45,0.45,0.45,0.45,0.750005,0.750005
+renew045nuc070,0.45,0.45,0.45,0.45,0.700005,0.700005
+renew045nuc065,0.45,0.45,0.45,0.45,0.650005,0.650005
+renew045nuc060,0.45,0.45,0.45,0.45,0.600005,0.600005
+renew045nuc055,0.45,0.45,0.45,0.45,0.550005,0.550005
+renew045nuc050,0.45,0.45,0.45,0.45,0.500005,0.500005
+renew045nuc045,0.45,0.45,0.45,0.45,0.450005,0.450005
+renew045nuc040,0.45,0.45,0.45,0.45,0.400005,0.400005
+renew045nuc035,0.45,0.45,0.45,0.45,0.350005,0.350005
+renew045nuc030,0.45,0.45,0.45,0.45,0.300005,0.300005
+renew045nuc025,0.45,0.45,0.45,0.45,0.250005,0.250005
+renew045nuc020,0.45,0.45,0.45,0.45,0.200005,0.200005
+renew045nuc015,0.45,0.45,0.45,0.45,0.150005,0.150005
+renew045nuc010,0.45,0.45,0.45,0.45,0.100005,0.100005
+renew045nuc005,0.45,0.45,0.45,0.45,0.050005,0.050005
+renew045nuc000,0.45,0.45,0.45,0.45,0.00000001,0.00000001
+renew040nuc100,0.4,0.4,0.4,0.4,1,1
+renew040nuc095,0.4,0.4,0.4,0.4,0.950005,0.950005
+renew040nuc090,0.4,0.4,0.4,0.4,0.900005,0.900005
+renew040nuc085,0.4,0.4,0.4,0.4,0.850005,0.850005
+renew040nuc080,0.4,0.4,0.4,0.4,0.800005,0.800005
+renew040nuc075,0.4,0.4,0.4,0.4,0.750005,0.750005
+renew040nuc070,0.4,0.4,0.4,0.4,0.700005,0.700005
+renew040nuc065,0.4,0.4,0.4,0.4,0.650005,0.650005
+renew040nuc060,0.4,0.4,0.4,0.4,0.600005,0.600005
+renew040nuc055,0.4,0.4,0.4,0.4,0.550005,0.550005
+renew040nuc050,0.4,0.4,0.4,0.4,0.500005,0.500005
+renew040nuc045,0.4,0.4,0.4,0.4,0.450005,0.450005
+renew040nuc040,0.4,0.4,0.4,0.4,0.400005,0.400005
+renew040nuc035,0.4,0.4,0.4,0.4,0.350005,0.350005
+renew040nuc030,0.4,0.4,0.4,0.4,0.300005,0.300005
+renew040nuc025,0.4,0.4,0.4,0.4,0.250005,0.250005
+renew040nuc020,0.4,0.4,0.4,0.4,0.200005,0.200005
+renew040nuc015,0.4,0.4,0.4,0.4,0.150005,0.150005
+renew040nuc010,0.4,0.4,0.4,0.4,0.100005,0.100005
+renew040nuc005,0.4,0.4,0.4,0.4,0.050005,0.050005
+renew040nuc000,0.4,0.4,0.4,0.4,0.00000001,0.00000001
+renew035nuc100,0.35,0.35,0.35,0.35,1,1
+renew035nuc095,0.35,0.35,0.35,0.35,0.950005,0.950005
+renew035nuc090,0.35,0.35,0.35,0.35,0.900005,0.900005
+renew035nuc085,0.35,0.35,0.35,0.35,0.850005,0.850005
+renew035nuc080,0.35,0.35,0.35,0.35,0.800005,0.800005
+renew035nuc075,0.35,0.35,0.35,0.35,0.750005,0.750005
+renew035nuc070,0.35,0.35,0.35,0.35,0.700005,0.700005
+renew035nuc065,0.35,0.35,0.35,0.35,0.650005,0.650005
+renew035nuc060,0.35,0.35,0.35,0.35,0.600005,0.600005
+renew035nuc055,0.35,0.35,0.35,0.35,0.550005,0.550005
+renew035nuc050,0.35,0.35,0.35,0.35,0.500005,0.500005
+renew035nuc045,0.35,0.35,0.35,0.35,0.450005,0.450005
+renew035nuc040,0.35,0.35,0.35,0.35,0.400005,0.400005
+renew035nuc035,0.35,0.35,0.35,0.35,0.350005,0.350005
+renew035nuc030,0.35,0.35,0.35,0.35,0.300005,0.300005
+renew035nuc025,0.35,0.35,0.35,0.35,0.250005,0.250005
+renew035nuc020,0.35,0.35,0.35,0.35,0.200005,0.200005
+renew035nuc015,0.35,0.35,0.35,0.35,0.150005,0.150005
+renew035nuc010,0.35,0.35,0.35,0.35,0.100005,0.100005
+renew035nuc005,0.35,0.35,0.35,0.35,0.050005,0.050005
+renew035nuc000,0.35,0.35,0.35,0.35,0.00000001,0.00000001
+renew030nuc100,0.3,0.3,0.3,0.3,1,1
+renew030nuc095,0.3,0.3,0.3,0.3,0.950005,0.950005
+renew030nuc090,0.3,0.3,0.3,0.3,0.900005,0.900005
+renew030nuc085,0.3,0.3,0.3,0.3,0.850005,0.850005
+renew030nuc080,0.3,0.3,0.3,0.3,0.800005,0.800005
+renew030nuc075,0.3,0.3,0.3,0.3,0.750005,0.750005
+renew030nuc070,0.3,0.3,0.3,0.3,0.700005,0.700005
+renew030nuc065,0.3,0.3,0.3,0.3,0.650005,0.650005
+renew030nuc060,0.3,0.3,0.3,0.3,0.600005,0.600005
+renew030nuc055,0.3,0.3,0.3,0.3,0.550005,0.550005
+renew030nuc050,0.3,0.3,0.3,0.3,0.500005,0.500005
+renew030nuc045,0.3,0.3,0.3,0.3,0.450005,0.450005
+renew030nuc040,0.3,0.3,0.3,0.3,0.400005,0.400005
+renew030nuc035,0.3,0.3,0.3,0.3,0.350005,0.350005
+renew030nuc030,0.3,0.3,0.3,0.3,0.300005,0.300005
+renew030nuc025,0.3,0.3,0.3,0.3,0.250005,0.250005
+renew030nuc020,0.3,0.3,0.3,0.3,0.200005,0.200005
+renew030nuc015,0.3,0.3,0.3,0.3,0.150005,0.150005
+renew030nuc010,0.3,0.3,0.3,0.3,0.100005,0.100005
+renew030nuc005,0.3,0.3,0.3,0.3,0.050005,0.050005
+renew030nuc000,0.3,0.3,0.3,0.3,0.00000001,0.00000001
+renew025nuc100,0.25,0.25,0.25,0.25,1,1
+renew025nuc095,0.25,0.25,0.25,0.25,0.950005,0.950005
+renew025nuc090,0.25,0.25,0.25,0.25,0.900005,0.900005
+renew025nuc085,0.25,0.25,0.25,0.25,0.850005,0.850005
+renew025nuc080,0.25,0.25,0.25,0.25,0.800005,0.800005
+renew025nuc075,0.25,0.25,0.25,0.25,0.750005,0.750005
+renew025nuc070,0.25,0.25,0.25,0.25,0.700005,0.700005
+renew025nuc065,0.25,0.25,0.25,0.25,0.650005,0.650005
+renew025nuc060,0.25,0.25,0.25,0.25,0.600005,0.600005
+renew025nuc055,0.25,0.25,0.25,0.25,0.550005,0.550005
+renew025nuc050,0.25,0.25,0.25,0.25,0.500005,0.500005
+renew025nuc045,0.25,0.25,0.25,0.25,0.450005,0.450005
+renew025nuc040,0.25,0.25,0.25,0.25,0.400005,0.400005
+renew025nuc035,0.25,0.25,0.25,0.25,0.350005,0.350005
+renew025nuc030,0.25,0.25,0.25,0.25,0.300005,0.300005
+renew025nuc025,0.25,0.25,0.25,0.25,0.250005,0.250005
+renew025nuc020,0.25,0.25,0.25,0.25,0.200005,0.200005
+renew025nuc015,0.25,0.25,0.25,0.25,0.150005,0.150005
+renew025nuc010,0.25,0.25,0.25,0.25,0.100005,0.100005
+renew025nuc005,0.25,0.25,0.25,0.25,0.050005,0.050005
+renew025nuc000,0.25,0.25,0.25,0.25,0.00000001,0.00000001
+renew020nuc100,0.2,0.2,0.2,0.2,1,1
+renew020nuc095,0.2,0.2,0.2,0.2,0.950005,0.950005
+renew020nuc090,0.2,0.2,0.2,0.2,0.900005,0.900005
+renew020nuc085,0.2,0.2,0.2,0.2,0.850005,0.850005
+renew020nuc080,0.2,0.2,0.2,0.2,0.800005,0.800005
+renew020nuc075,0.2,0.2,0.2,0.2,0.750005,0.750005
+renew020nuc070,0.2,0.2,0.2,0.2,0.700005,0.700005
+renew020nuc065,0.2,0.2,0.2,0.2,0.650005,0.650005
+renew020nuc060,0.2,0.2,0.2,0.2,0.600005,0.600005
+renew020nuc055,0.2,0.2,0.2,0.2,0.550005,0.550005
+renew020nuc050,0.2,0.2,0.2,0.2,0.500005,0.500005
+renew020nuc045,0.2,0.2,0.2,0.2,0.450005,0.450005
+renew020nuc040,0.2,0.2,0.2,0.2,0.400005,0.400005
+renew020nuc035,0.2,0.2,0.2,0.2,0.350005,0.350005
+renew020nuc030,0.2,0.2,0.2,0.2,0.300005,0.300005
+renew020nuc025,0.2,0.2,0.2,0.2,0.250005,0.250005
+renew020nuc020,0.2,0.2,0.2,0.2,0.200005,0.200005
+renew020nuc015,0.2,0.2,0.2,0.2,0.150005,0.150005
+renew020nuc010,0.2,0.2,0.2,0.2,0.100005,0.100005
+renew020nuc005,0.2,0.2,0.2,0.2,0.050005,0.050005
+renew020nuc000,0.2,0.2,0.2,0.2,0.00000001,0.00000001
+renew015nuc100,0.15,0.15,0.15,0.15,1,1
+renew015nuc095,0.15,0.15,0.15,0.15,0.950005,0.950005
+renew015nuc090,0.15,0.15,0.15,0.15,0.900005,0.900005
+renew015nuc085,0.15,0.15,0.15,0.15,0.850005,0.850005
+renew015nuc080,0.15,0.15,0.15,0.15,0.800005,0.800005
+renew015nuc075,0.15,0.15,0.15,0.15,0.750005,0.750005
+renew015nuc070,0.15,0.15,0.15,0.15,0.700005,0.700005
+renew015nuc065,0.15,0.15,0.15,0.15,0.650005,0.650005
+renew015nuc060,0.15,0.15,0.15,0.15,0.600005,0.600005
+renew015nuc055,0.15,0.15,0.15,0.15,0.550005,0.550005
+renew015nuc050,0.15,0.15,0.15,0.15,0.500005,0.500005
+renew015nuc045,0.15,0.15,0.15,0.15,0.450005,0.450005
+renew015nuc040,0.15,0.15,0.15,0.15,0.400005,0.400005
+renew015nuc035,0.15,0.15,0.15,0.15,0.350005,0.350005
+renew015nuc030,0.15,0.15,0.15,0.15,0.300005,0.300005
+renew015nuc025,0.15,0.15,0.15,0.15,0.250005,0.250005
+renew015nuc020,0.15,0.15,0.15,0.15,0.200005,0.200005
+renew015nuc015,0.15,0.15,0.15,0.15,0.150005,0.150005
+renew015nuc010,0.15,0.15,0.15,0.15,0.100005,0.100005
+renew015nuc005,0.15,0.15,0.15,0.15,0.050005,0.050005
+renew015nuc000,0.15,0.15,0.15,0.15,0.00000001,0.00000001
+renew010nuc100,0.1,0.1,0.1,0.1,1,1
+renew010nuc095,0.1,0.1,0.1,0.1,0.950005,0.950005
+renew010nuc090,0.1,0.1,0.1,0.1,0.900005,0.900005
+renew010nuc085,0.1,0.1,0.1,0.1,0.850005,0.850005
+renew010nuc080,0.1,0.1,0.1,0.1,0.800005,0.800005
+renew010nuc075,0.1,0.1,0.1,0.1,0.750005,0.750005
+renew010nuc070,0.1,0.1,0.1,0.1,0.700005,0.700005
+renew010nuc065,0.1,0.1,0.1,0.1,0.650005,0.650005
+renew010nuc060,0.1,0.1,0.1,0.1,0.600005,0.600005
+renew010nuc055,0.1,0.1,0.1,0.1,0.550005,0.550005
+renew010nuc050,0.1,0.1,0.1,0.1,0.500005,0.500005
+renew010nuc045,0.1,0.1,0.1,0.1,0.450005,0.450005
+renew010nuc040,0.1,0.1,0.1,0.1,0.400005,0.400005
+renew010nuc035,0.1,0.1,0.1,0.1,0.350005,0.350005
+renew010nuc030,0.1,0.1,0.1,0.1,0.300005,0.300005
+renew010nuc025,0.1,0.1,0.1,0.1,0.250005,0.250005
+renew010nuc020,0.1,0.1,0.1,0.1,0.200005,0.200005
+renew010nuc015,0.1,0.1,0.1,0.1,0.150005,0.150005
+renew010nuc010,0.1,0.1,0.1,0.1,0.100005,0.100005
+renew010nuc005,0.1,0.1,0.1,0.1,0.050005,0.050005
+renew010nuc000,0.1,0.1,0.1,0.1,0.00000001,0.00000001
+renew005nuc100,0.05,0.05,0.05,0.05,1,1
+renew005nuc095,0.05,0.05,0.05,0.05,0.950005,0.950005
+renew005nuc090,0.05,0.05,0.05,0.05,0.900005,0.900005
+renew005nuc085,0.05,0.05,0.05,0.05,0.850005,0.850005
+renew005nuc080,0.05,0.05,0.05,0.05,0.800005,0.800005
+renew005nuc075,0.05,0.05,0.05,0.05,0.750005,0.750005
+renew005nuc070,0.05,0.05,0.05,0.05,0.700005,0.700005
+renew005nuc065,0.05,0.05,0.05,0.05,0.650005,0.650005
+renew005nuc060,0.05,0.05,0.05,0.05,0.600005,0.600005
+renew005nuc055,0.05,0.05,0.05,0.05,0.550005,0.550005
+renew005nuc050,0.05,0.05,0.05,0.05,0.500005,0.500005
+renew005nuc045,0.05,0.05,0.05,0.05,0.450005,0.450005
+renew005nuc040,0.05,0.05,0.05,0.05,0.400005,0.400005
+renew005nuc035,0.05,0.05,0.05,0.05,0.350005,0.350005
+renew005nuc030,0.05,0.05,0.05,0.05,0.300005,0.300005
+renew005nuc025,0.05,0.05,0.05,0.05,0.250005,0.250005
+renew005nuc020,0.05,0.05,0.05,0.05,0.200005,0.200005
+renew005nuc015,0.05,0.05,0.05,0.05,0.150005,0.150005
+renew005nuc010,0.05,0.05,0.05,0.05,0.100005,0.100005
+renew005nuc005,0.05,0.05,0.05,0.05,0.050005,0.050005
+renew005nuc000,0.05,0.05,0.05,0.05,0.00000001,0.00000001
+renew000nuc100,1.00E-08,1.00E-08,1.00E-08,1.00E-08,1,1
+renew000nuc095,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.950005,0.950005
+renew000nuc090,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.900005,0.900005
+renew000nuc085,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.850005,0.850005
+renew000nuc080,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.800005,0.800005
+renew000nuc075,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.750005,0.750005
+renew000nuc070,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.700005,0.700005
+renew000nuc065,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.650005,0.650005
+renew000nuc060,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.600005,0.600005
+renew000nuc055,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.550005,0.550005
+renew000nuc050,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.500005,0.500005
+renew000nuc045,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.450005,0.450005
+renew000nuc040,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.400005,0.400005
+renew000nuc035,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.350005,0.350005
+renew000nuc030,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.300005,0.300005
+renew000nuc025,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.250005,0.250005
+renew000nuc020,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.200005,0.200005
+renew000nuc015,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.150005,0.150005
+renew000nuc010,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.100005,0.100005
+renew000nuc005,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.050005,0.050005
+renew000nuc000,1.00E-08,1.00E-08,1.00E-08,1.00E-08,0.00000001,0.00000001
+,,,,,,
+END_DATA,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+This area can be used for notes or text.,,,,,,
