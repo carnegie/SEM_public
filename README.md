@@ -1,6 +1,5 @@
-# Dowling_et_al_2020
+# SEM-long-duration-storage
 
-Documenting "Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems", Joule XXX to be published August 6.
-Repository will be populated prior.
+Model code, input data, and analytical results for Dowling et al., Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems, Joule (2020), https://doi.org/10.1016/j.joule.2020.07.007.
 
-Please cite as: Dowling et al., Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems, Joule (2020), https://doi.org/10.1016/j.joule.2020.07.007
+Output data files will be added via Zenodo soon.
