@@ -1,5 +1,16 @@
-# SEM-1.1
+# SEM-energy-storage
+This project contains the model code and input data for the following paper. Output result files will be available in Zenodo.
+
+Tong, F.; Yuan, M.; Lewis, N.S.; Davis, S.J.; Caldeira, K.* Effects of deep reductions in energy storage costs on highly reliable wind and solar electricity systems. Forthcoming at iScience. 
+
+Contact information:
+Fan Tong, tongfanchina@gmail.com
+Ken Caldeira, kcaldeira@carnegiescience.edu
+
+# SEM Model
 This is a Simple Energy Model that optimizes electricity (or electricity and fuels) without considering any spatial variation, policy, capacity markets, etc.
+Version v1.1
+Last updated 2018/12
 
 # Running Environment
 Python v3.
