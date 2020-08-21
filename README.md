@@ -1,30 +1,15 @@
 # SEM-1.1
-Python 3.6 version of SEM-1. This is a Simple Energy Model that optimizes electricity (or electricity
-and fuels) without considering any spatial variation, policy, capacity markets, etc.
+This is a Simple Energy Model that optimizes electricity (or electricity and fuels) without considering any spatial variation, policy, capacity markets, etc.
 
-<br>
-<b>=====  WISH LIST OF THINGS TO BE DONE ON THIS MODEL  =====</b>
-<br>
+# Running Environment
+Python v3.
+cvxpy, version 0.4.11 -- python library
+Gurubi -- solver
 
-The following is a wish list for improvements to our model and its usability:
+See below for details.
 
-A. Some LIFO storage and PGP_storage analysis and figures as part of standard output.
+# WINDOWS 10 INSTALLATION INSTRUCTIONS
 
-B. Reconfigure model to allow running more cases without needing more memory.
-
-C. Automate some checks on aberrant usage of storage (?)
-
-D. Make version with specified capacities.
-
-E. Add inter-case comparisons to Quick_Look.py
-
-F. Do a runtime analysis to speed up execution of Quick_Look.py
-
-G. Make version that can be spread across CEES-Mazama.
-
-<br>
-<b>=====  WINDOWS 10 INSTALLATION INSTRUCTIONS  ===== </b>
-<br>
 The following is installation instructions for Windows 10 machines.
 
 1. Use remove programs to remove all python2.x programs. This uninstalls Anaconda2.
@@ -57,8 +42,6 @@ If this install fails on installing the ecos package, try the following line in 
                 > conda install ecos
 		> pip install cvxpy==0.4.11
 
-<b>Additional notes on installing cvxpy</b> (Mengyao)
-
 If you get error messages for not having (or having the correct versions of) ecos, scs, or cvxcanon, try the following command (<a href="https://anaconda.org/sebp/cvxpy">Anaconda Cloud</a>): 
 
                 > conda install -c sebp cvxpy==0.4.11
@@ -73,10 +56,8 @@ Check the installation with
 -- Open case_input.xlsx in excel. Make the cases you want (by altering base case or ratios to base case), and then save sheet as case_input.csv.
 -- Open Spyder and then within Spyder navigate to the folder that was cloned from github and open and run Simple_Energy_Model.py
 
+# MacOS 10.13 INSTALLATION INSTRUCTIONS
 
-<br>
-<b>=====  MacOS 10.13 INSTALLATION INSTRUCTIONS  ===== </b>
-<br>
 The following is installation instructions for MacOS 10.13 machines.
 
 1. If you installed Anaconda2 before, use remove programs to remove Anaconda2. You don't need to remove default python2 which might cause unexpected error 
