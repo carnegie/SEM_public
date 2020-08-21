@@ -33,7 +33,8 @@ import time
 
 start_time = time.time()
 
-case_input_path_filename = './Input_Data/case_input_1yearby36.csv'
+# Input files for different runs/scenarios are defined in the "Input_Data" folder. Each technology scenario has a seperate folder.
+case_input_path_filename = './Input_Data/WS_Base/case_input_1yearby36.csv'
 
 # -----------------------------------------------------------------------------
 # =============================================================================
