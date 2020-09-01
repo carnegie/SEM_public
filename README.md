@@ -6,3 +6,5 @@ This repository contains branches corresponding to published works using the SEM
 
  * Dowling et al., Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems, Joule (2020), https://doi.org/10.1016/j.joule.2020.07.007
    * see branch `Dowling_et_al_2020`: https://github.com/carnegie/SEM_public/tree/Dowling_et_al_2020
+ * Tong, F., Yuan, M., Lewis, N.S., Davis, S.J., Caldeira, K., Effects of deep reductions in energy storage costs on highly reliable wind and solar electricity systems, ISCIENCE (2020), doi: https://doi.org/10.1016/j.isci.2020.101484 
+   * see branch `Tong_et_al_2020`: https://github.com/carnegie/SEM_public/tree/Tong_et_al_2020
