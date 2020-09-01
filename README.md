@@ -1,7 +1,9 @@
 # SEM-energy-storage
-This project contains the model code and input data for the following paper. Output result files will be available in Zenodo.
+This project contains the model code and input data for the following paper.
 
-Tong, F.; Yuan, M.; Lewis, N.S.; Davis, S.J.; Caldeira, K.* Effects of deep reductions in energy storage costs on highly reliable wind and solar electricity systems. Forthcoming at iScience. 
+Tong, F., Yuan, M., Lewis, N.S., Davis, S.J., Caldeira, K., Effects of deep reductions in energy storage costs on highly reliable wind and solar electricity systems, ISCIENCE (2020), doi: https://doi.org/10.1016/j.isci.2020.101484.  
+
+This repository includes raw and processed results: doi: 10.5281/zenodo.3995063
 
 Contact information:
 Fan Tong, tongfanchina@gmail.com
