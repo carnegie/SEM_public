@@ -8,3 +8,5 @@ This repository contains branches corresponding to published works using the SEM
    * see branch `Dowling_et_al_2020`: https://github.com/carnegie/SEM_public/tree/Dowling_et_al_2020
  * Tong, F., Yuan, M., Lewis, N.S., Davis, S.J., Caldeira, K., Effects of deep reductions in energy storage costs on highly reliable wind and solar electricity systems, ISCIENCE (2020), doi: https://doi.org/10.1016/j.isci.2020.101484 
    * see branch `Tong_et_al_2020`: https://github.com/carnegie/SEM_public/tree/Tong_et_al_2020
+ * Mengyao Yuan, Fan Tong, Lei Duan, Jacqueline A. Dowling, Steven J. Davis, Nathan S. Lewis, Ken Caldeira, Would firm generators facilitate or deter variable renewable energy in a carbon-free electricity system?, Applied Energy, Volume 279, 2020, https://doi.org/10.1016/j.apenergy.2020.115789.
+   * see branch `Yuan_et_al_2020`: https://github.com/carnegie/SEM_public/tree/Yuan_et_al_2020
