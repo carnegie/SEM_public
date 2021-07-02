@@ -1,6 +1,6 @@
 # Results files
 
-The files contained in here are for a number of different scenarios:
+The files contained in here are for a number of different scenarios. File naming is based on the date of simulation and a version and contains the strings below:
 
 ## Scenarios
  - *20200805_v2* = basecase scenarios used in the main text
@@ -12,7 +12,7 @@ The files contained in here are for a number of different scenarios:
 ## Sensitivity
 Additionally, there is a folder with results from a cost sensitivity analysis with files named appropriately based on the fraction of the basecase costs attributed to each tech.
 
-`cost_sensitivity`
+`/cost_sensitivity`
 
 The naming for the cost reductions is:
  * EL = electrolyzer
@@ -25,4 +25,4 @@ Thus, SOL0.75 means the solar capital costs were reduced to 75% of the basecase
 
 ## Dispatch curve
 
-The dispatch curve figure (fig 4) can be recreated with the results files in `dispatch_curve`
+The dispatch curve figure (fig 4) can be recreated with the results files in `/dispatch_curve`
