@@ -4,6 +4,8 @@ This repository contains branches corresponding to published works using the SEM
 
 # Publication / Associated Branch
 
+ * Ruggles et al., Opportunities for flexible electricity loads such as hydrogen production from curtailed generation, Advances in Applied Energy, 2021, https://doi.org/10.1016/j.adapen.2021.100051
+   * see branch `Ruggles_et_al_2021`: https://github.com/carnegie/SEM_public/tree/Ruggles_et_al_2021
  * Rinaldi et al., Wind and Solar Resource Droughts in California Highlight the Benefits of Long-Term Storage and Integration with the Western Interconnect, Environ. Sci. Technol. 2021, https://doi.org/10.1021/acs.est.0c07848
    * see branch `Rinaldi_et_al_2021`: https://github.com/carnegie/SEM_public/tree/Rinaldi_et_al_2021
  * Dowling et al., Role of Long-Duration Energy Storage in Variable Renewable Electricity Systems, Joule (2020), https://doi.org/10.1016/j.joule.2020.07.007
