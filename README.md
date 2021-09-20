@@ -2,6 +2,8 @@
 
 This repository contains branches corresponding to published works using the SEM model. It is designed to retain these branches for future documentation and reproducibility.
 
+Also see: https://github.com/Carnegie/MEM_public for the subsequent version of the model called MEM
+
 # Publication / Associated Branch
 
  * Ruggles et al., Opportunities for flexible electricity loads such as hydrogen production from curtailed generation, Advances in Applied Energy, 2021, https://doi.org/10.1016/j.adapen.2021.100051
